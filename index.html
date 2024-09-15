@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <form id="self-efficacy-form">
+        <!-- Questions will be generated here -->
+    </form>
+
+    <button type="button" onclick="calculateScore()">Sonucu Gör</button>
+    <p id="result"></p>
+
+    <script>
+        // Questions and options
+        const questions = [
+            "Yeterince çaba harcarsam, zor sorunları çözmenin bir yolunu daima bulabilirim:",
+            "Bana karşı çıkıldığında, istediğimi elde etmemi sağlayacak bir yol ve yöntem bulabilirim:",
+            "Amaçlarıma bağlı kalmak ve bunları gerçekleştirmek benim için kolaydır:",
+            "Beklenmedik olaylarla etkili bir biçimde başa çıkabileceğime inanıyorum:",
+            "Yeteneklerim sayesinde beklenmedik durumlarla nasıl başedebileceğimi biliyorum:",
+            "Gerekli çabayı gösterirsem, birçok sorunu çözebilirim:",
+            "Baş etme gücüme güvendiğim için zorluklarla karşılaştığımda soğukkanlılığımı koruyabilirim:",
+            "Bir sorunla karşılaştığımda, genellikle birkaç çözüm yolu bulabilirim:",
+            "Başım dertte olduğunda, genellikle bir çözüm düşünebilirim:",
+            "Karşıma ne çıkarsa çıksın, üstesinden gelebilirim:"
+        ];
+
+        const scale = ["Tamamen yanlış", "Biraz doğru", "Orta düzeyde doğru", "Tamamen doğru"];
+
+        // Generate form dynamically
+        const form = document.getElementById("self-efficacy-form");
+
+        questions.forEach((question, index) => {
+            const questionDiv = document.createElement("div");
+            questionDiv.classList.add("question");
+            
+            const questionText = document.createElement("p");
+            questionText.textContent = `${index + 1}. ${question}`;
+            questionDiv.appendChild(questionText);
+            
+            const optionsDiv = document.createElement("div");
+            optionsDiv.classList.add("options");
+            
+            scale.forEach((option, scaleIndex) => {
+                const input = document.createElement("input");
+                input.type = "radio";
+                input.name = `q${index + 1}`;
+                input.value = scaleIndex + 1;
+                
+                const label = document.createElement("label");
+                label.textContent = option;
+                
+                optionsDiv.appendChild(input);
+                optionsDiv.appendChild(label);
+                optionsDiv.appendChild(document.createElement("br"));
+            });
+            
+            questionDiv.appendChild(optionsDiv);
+            form.appendChild(questionDiv);
+        });
+
+        function calculateScore() {
+            let score = 0;
+            for (let i = 1; i <= questions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selectedOption) {
+                    score += parseInt(selectedOption.value);
+                }
+            }
+            const resultText = `Genel öz-yeterlik ölçeğindeki puanınız: ${score}.<br>Uluslararası ortalama 29.55.`;
+            document.getElementById("result").innerHTML = resultText;
+        }
+    </script>
+
+</body>
+</html>
